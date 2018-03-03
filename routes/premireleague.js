@@ -26,9 +26,9 @@ router.get("/premire-league/news/new", middleware.isLoggedIn, function(req, res)
 
 // HADLING POST NEWS
 router.post("/premire-league/news", middleware.isLoggedIn, function(req, res){
-    var title = req.body.title;
+    var title = req.sanitize(req.body.title.propertyToSanitize);
     var image = req.body.image;
-    var desc = req.body.description;
+    var desc = req.sanitize(req.body.description.propertyToSanitize);
     var author = {
         id: req.user._id,
         username: req.user.username
