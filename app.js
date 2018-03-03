@@ -1,5 +1,6 @@
 var express = require('express'),
     app = express(),
+    faker = require('faker'),
     bodyParser = require('body-parser'),
     mongoose = require('mongoose'),
     expressSanitizer = require('express-sanitizer'),
@@ -47,5 +48,6 @@ app.get("/*", function(req, res){
     res.send("error 404");
 })
 app.listen(PORT, function() {
-    console.log("PL-NEWS SITE STARTING TO ONLINE! 127.0.0.1:3000/");
+    console.log("PL-NEWS SITE STARTING TO ONLINE!: " + PORT);
+    
 });

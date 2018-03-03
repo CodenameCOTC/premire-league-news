@@ -1,4 +1,5 @@
 <% include ./partials/header %>
+<script src="https://cdn.ckeditor.com/ckeditor5/1.0.0-alpha.2/classic/ckeditor.js"></script>
 
 <div class="ui main text container segment">
     <div class="ui huge header">Post News</div>
@@ -13,7 +14,14 @@
         </div>
         <div class="field">
             <label>Post Content</label>
-            <textarea name="post[dsc]"></textarea>
+            <textarea rows="50" cols="100" name="post[dsc]" id="editor"></textarea>
+            <script>
+                ClassicEditor
+                    .create( document.querySelector( '#editor' ) )
+                    .catch( error => {
+                        console.error( error );
+                    } );
+            </script>
         </div>
         <input class="ui violet big basic button" type="submit">
     </form>
