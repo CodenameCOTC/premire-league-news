@@ -26,16 +26,16 @@ router.get("/premire-league/news/new", middleware.isLoggedIn, function(req, res)
 
 // HADLING POST NEWS
 router.post("/premire-league/news", middleware.isLoggedIn, function(req, res){
-    var title = req.sanitize(req.body.title.propertyToSanitize);
-    var image = req.body.image;
-    var desc = req.sanitize(req.body.description.propertyToSanitize);
+    var title = req.sanitize(req.body.post["title"]);
+    var image = req.body.post["image"];
+    var desc = req.sanitize(req.body.post["dsc"]);
     var author = {
         id: req.user._id,
         username: req.user.username
     }
     var newNews = {title: title, image: image, description: desc, author: author}
     plNews.create(newNews, function(err, newNews){
-        console.log(newNews);
+       // console.log(newNews);
         if(err){
             console.log(err);
             res.redirect("back");
@@ -72,8 +72,8 @@ router.get("/premire-league/news/:id/edit", middleware.checkPLNewsOwnership, fun
 
 // HANDLING UPDATE NEWS
 router.put("/premire-league/news/:id", middleware.checkPLNewsOwnership, function(req, res){
-    req.body.news.body = req.sanitize(req.body.news.body);
-    var formData = req.body.news;
+    
+    var formData = req.sanitize(req.body.news);
     plNews.findByIdAndUpdate(req.params.id, formData, function(err, updateNews){
         if(err){
             console.log(err);

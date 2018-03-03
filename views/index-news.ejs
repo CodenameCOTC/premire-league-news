@@ -12,7 +12,7 @@
                 <span class="cinema"><%= news.created.toDateString() %></span>
               </div>
               <div class="description">
-                <p><%= news.description.substring(0,100); %></p>
+                <p><%= news.description.substring(4,100); %>...</p>
               </div>
               <div class="extra">
                 <a href="/premire-league/news/<%= news._id %>" class="ui floated basic violet button">
