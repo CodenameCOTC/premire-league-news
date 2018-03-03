@@ -14,7 +14,7 @@ var plRoutes = require('./routes/premireleague');
 var indexRoutes = require('./routes/index'); 
 
 // APP CONFIG
-mongoose.connect("mongodb://localhost/premire-league");   
+mongoose.connect("mongodb://testusername:password@ds155218.mlab.com:55218/plnews");   
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(expressSanitizer());
 app.set("view engine", "ejs");

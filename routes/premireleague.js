@@ -26,14 +26,14 @@ router.get("/premire-league/news/new", middleware.isLoggedIn, function(req, res)
 
 // HADLING POST NEWS
 router.post("/premire-league/news", middleware.isLoggedIn, function(req, res){
-    var name = req.body.name;
+    var title = req.body.title;
     var image = req.body.image;
     var desc = req.body.description;
     var author = {
         id: req.user._id,
         username: req.user.username
     }
-    var newNews = {name: name, image: image, description: desc, author: author}
+    var newNews = {title: title, image: image, description: desc, author: author}
     plNews.create(newNews, function(err, newNews){
         console.log(newNews);
         if(err){

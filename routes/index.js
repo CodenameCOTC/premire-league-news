@@ -1,6 +1,7 @@
 var express = require('express'),
     router = express.Router(),
     passport = require('passport'),
+    middleware = require('../middleware'),
     User = require('../models/user');
 
 // SHOWING REGISTER FORM
