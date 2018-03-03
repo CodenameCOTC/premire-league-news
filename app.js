@@ -7,6 +7,7 @@ var express = require('express'),
     passport = require('passport'),
     LocalStrategy = require('passport-local'),
     plNews = require('./models/plnews'),
+    PORT = process.env.PORT || 50000,
     User = require('./models/user');
 
 // REQUIRING ROUTES
@@ -44,6 +45,6 @@ app.use("/", indexRoutes);
 app.get("/*", function(req, res){
     res.send("error 404");
 })
-app.listen(3000, function() {
+app.listen(PORT, function() {
     console.log("PL-NEWS SITE STARTING TO ONLINE! 127.0.0.1:3000/");
 });
