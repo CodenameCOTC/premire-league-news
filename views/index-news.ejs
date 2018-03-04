@@ -7,12 +7,15 @@
               <img src="<%= news.image %>">
             </div>
             <div class="content">
-              <a class="header"><%= news.title %></a>
+                <h3 class="ui block header">
+                    <a class="header"><%= news.title %></a>
+                  </h3>
+              
               <div class="meta">
                 <span class="cinema"><%= news.created.toDateString() %></span>
               </div>
               <div class="description">
-                <p><%= news.description.substring(20,100); %>...</p>
+                  <h4 class="ui violet header"><%= news.description.substring(20,100); %>...</h4>
               </div>
               <div class="extra">
                 <a href="/premire-league/news/<%= news._id %>" class="ui floated basic violet button">

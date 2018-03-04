@@ -15,12 +15,13 @@
                     <div class="header item">
                         <i class="code icon"></i> <a href="/">Premire League News</a></div>
                     <a href="/premire-league/news" class="item">Home</a>
-                    <a href="/premire-league/news/new" class="item">New Post</a>
+                    
                     <% if(!currentUser){ %>
                         <a href="/login" class="item">Login</a>
                         <a href="/register" class="item">Sign Up</a>
                         
                    <% }  else  { %>
+                        <a href="/premire-league/news/new" class="item">New Post</a>
                         <a href="#" class="item">Signed In As: <%= currentUser.username %></a>
                         <a href="/logout" class="item">Log Out</a>
                    <% } %>
