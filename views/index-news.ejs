@@ -1,80 +1,76 @@
 <% include ./partials/header %>
-<div class="ui main text container">
-<div class="ui divided items">
+<H1>Recent Feeds</H1>
+<div class="ui three column divided grid">
+    <div class="row">
         <% plNews.forEach(function(news){ %>
-         <div class="item">
-            <div class="image">
-              <img src="<%= news.image %>">
-            </div>
-            <div class="content">
-                <h3 class="ui block header">
-                    <a class="header"><%= news.title %></a>
-                  </h3>
+      <div class="column">
+          <h3 class="ui block header">
+            <a href="/premire-league/news/<%= news._id %>">
+              <%= news.title.substring(0, 15) %>
+            </a>
+            </h3>
+          <img class="ui middle aligned large image" src="<%= news.image %>">
               
-              <div class="meta">
-                <span class="cinema"><%= news.created.toDateString() %></span>
-              </div>
-              <div class="description">
-                  <h4 class="ui violet header"><%= news.description.substring(20,100); %>...</h4>
-              </div>
-              <div class="extra">
-                <a href="/premire-league/news/<%= news._id %>" class="ui floated basic violet button">
-                  Read More
-                  <i class="right chevron icon"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-        <% }); %>
+      
+        
+    </div>  
+    <% }) %>
     </div>
-
-
-
-
     
-      <% if (pages && pages > 0) { %>
-        <div class="ui pagination menu">
-          <% if (current == 1) { %>
-          <a class="disabled item">First</a>
-          <% } else { %>
-          <a class="item" href="/premire-league/news?page=1">First</a>
-          <% } %>
-   
-          <% if (current == 1) { %>
-          <a class="item">«</a>
-          <% } else { %>
-          <a class="item" href="/premire-league/news?page=<%= Number(current) - 1 %>">«</a>
-          <% } %>
-   
-          <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
-          <% if (i !== 1) { %>
-          <a class="disabled item">...</a></li>
-          <% } %>
-          <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
-          <% if (i == current) { %>
-          <a class="item"><%= i %></a>
-          <% } else { %>
-          <a class="item" href="/premire-league/news?page=<%= i %>"><%= i %></a>
-          <% } %>
-          <% if (i == Number(current) + 4 && i < pages) { %>
-          <a class="disabled item">...</a>
-          <% } %>
-          <% } %>
-   
-          <% if (current == pages) { %>
-          <a class="disabled item">»</a>
-          <% } else { %>
-          <a class="item" href="/premire-league/news?page=<%= Number(current) + 1 %>">»</a>
-          <% } %>
-   
-          <% if (current == pages) { %>
-          <a class="disabled item">Last</a>
-          <% } else { %>
-          <a class="item" href="/premire-league/news?page=<%= pages %>">Last</a>
-          <% } %>
-        </div>
-      <% } %>
+</div>
   
 
 
-<% include ./partials/footer %>
+
+
+    <% if (pages && pages > 0) { %>
+      <div class="ui pagination menu">
+        <% if (current == 1) { %>
+          <a class="disabled item">First</a>
+          <% } else { %>
+            <a class="item" href="/premire-league/news?page=1">First</a>
+            <% } %>
+
+              <% if (current == 1) { %>
+                <a class="item">«</a>
+                <% } else { %>
+                  <a class="item" href="/premire-league/news?page=<%= Number(current) - 1 %>">«</a>
+                  <% } %>
+
+                    <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+                      <% if (i !== 1) { %>
+                        <a class="disabled item">...</a>
+                        </li>
+                        <% } %>
+                          <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+                            <% if (i == current) { %>
+                              <a class="item">
+                                <%= i %>
+                              </a>
+                              <% } else { %>
+                                <a class="item" href="/premire-league/news?page=<%= i %>">
+                                  <%= i %>
+                                </a>
+                                <% } %>
+                                  <% if (i == Number(current) + 4 && i < pages) { %>
+                                    <a class="disabled item">...</a>
+                                    <% } %>
+                                      <% } %>
+
+                                        <% if (current == pages) { %>
+                                          <a class="disabled item">»</a>
+                                          <% } else { %>
+                                            <a class="item" href="/premire-league/news?page=<%= Number(current) + 1 %>">»</a>
+                                            <% } %>
+
+                                              <% if (current == pages) { %>
+                                                <a class="disabled item">Last</a>
+                                                <% } else { %>
+                                                  <a class="item" href="/premire-league/news?page=<%= pages %>">Last</a>
+                                                  <% } %>
+      </div>
+      <% } %>
+
+
+
+        <% include ./partials/footer %>

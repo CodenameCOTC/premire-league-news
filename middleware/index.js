@@ -8,7 +8,7 @@ middlewareObj.checkPLNewsOwnership = function (req, res, next) {
             if (err) {
                 res.redirect("back");
             } else {
-                if (foundNews.author.id.equals(req.user._id)) {
+                if (foundNews.author.id.equals(req.user._id) || req.user.isSuperAdmin) {
                     next();
                 } else {
                     res.redirect("back");

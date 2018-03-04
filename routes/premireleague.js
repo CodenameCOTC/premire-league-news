@@ -10,10 +10,14 @@ router.get("/", function (req, res) {
 
 // RENDERING A PAGE TO SHOW ALL PL NEWS
 router.get("/premire-league/news", function (req, res) {
-    var perPage = 8;
+    var perPage = 15;
     var pageQuery = parseInt(req.query.page);
     var pageNumber = pageQuery ? pageQuery : 1;
-    plNews.find({}).skip((perPage * pageNumber) - perPage).limit(perPage).exec(function (err, news) {
+    plNews.find({})
+    .sort({created: -1})
+    .skip((perPage * pageNumber) - perPage)
+    .limit(perPage)
+    .exec(function (err, news) {
         plNews.count().exec(function (err, count) {
             if (err) {
                 console.log(err);
