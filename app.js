@@ -8,25 +8,29 @@ var express = require('express'),
     passport = require('passport'),
     LocalStrategy = require('passport-local'),
     plNews = require('./models/plnews'),
-    PORT = process.env.PORT || 50000,
-    User = require('./models/user');
+    User = require('./models/user'),
+    PORT = process.env.PORT || 50000;
 
 // REQUIRING ROUTES
-var plRoutes = require('./routes/premireleague');   
-var indexRoutes = require('./routes/index'); 
+var plRoutes = require('./routes/premireleague');
+var indexRoutes = require('./routes/index');
 
 // APP CONFIG
-mongoose.connect("mongodb://testusername:password@ds155218.mlab.com:55218/plnews");   
+mongoose.connect("mongodb://" + process.env.DB_USERNAME + ":" + process.env.DB_PASSWORD + "@ds155218.mlab.com:55218/plnews");
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 app.use(expressSanitizer());
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(methodOverride('_method'));
+require('dotenv').config();
+
 
 // PASSPORT CONFIGURATION
 app.use(require('express-session')({
-    secret: "Winner winner chicken dinner",
+    secret: process.env.SECRET_KEY,
     resave: false,
     saveUninitialized: false
 }));
@@ -44,10 +48,10 @@ app.use(function (req, res, next) {
 app.use("/", plRoutes);
 app.use("/", indexRoutes);
 
-app.get("/*", function(req, res){
+app.get("/*", function (req, res) {
     res.send("error 404");
 })
-app.listen(PORT, function() {
+app.listen(PORT, function () {
     console.log("PL-NEWS SITE STARTING TO ONLINE!: " + PORT);
-    
+
 });

@@ -2,7 +2,37 @@ var express = require('express'),
     router = express.Router(),
     faker = require('faker'),
     plNews = require('../models/plnews'),
+    request = require('request'),
+    multer = require('multer'),
     middleware = require('../middleware');
+
+require('dotenv').config();
+
+
+var storage = multer.diskStorage({
+    filename: function (req, file, callback) {
+        callback(null, Date.now() + file.originalname);
+    }
+});
+
+var imageFilter = function (req, file, cb) {
+    // accept image files only
+    if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
+        return cb(new Error('Only image files are allowed!'), false);
+    }
+    cb(null, true);
+};
+var upload = multer({
+    storage: storage,
+    fileFilter: imageFilter
+})
+
+var cloudinary = require('cloudinary');
+cloudinary.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.API_KEY,
+    api_secret: process.env.API_SECRET
+});
 
 router.get("/", function (req, res) {
     res.render("landing-page");
@@ -14,25 +44,27 @@ router.get("/premire-league/news", function (req, res) {
     var pageQuery = parseInt(req.query.page);
     var pageNumber = pageQuery ? pageQuery : 1;
     plNews.find({})
-    .sort({created: -1})
-    .skip((perPage * pageNumber) - perPage)
-    .limit(perPage)
-    .exec(function (err, news) {
-        plNews.count().exec(function (err, count) {
-            if (err) {
-                console.log(err);
-            } else {
-                res.render("index-news", {
-                    plNews: news,
-                    current: pageNumber,
-                    pages: Math.ceil(count / perPage)
-                });
-            }
+        .sort({
+            created: -1
+        })
+        .skip((perPage * pageNumber) - perPage)
+        .limit(perPage)
+        .exec(function (err, news) {
+            plNews.count().exec(function (err, count) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    res.render("index-news", {
+                        plNews: news,
+                        current: pageNumber,
+                        pages: Math.ceil(count / perPage)
+                    });
+                }
+            });
         });
-    });
 });
-        
-    
+
+
 
 
 // SHOWING FORM TO POST A NEW NEWS
@@ -41,28 +73,30 @@ router.get("/premire-league/news/new", middleware.isLoggedIn, function (req, res
 });
 
 // HADLING POST NEWS
-router.post("/premire-league/news", middleware.isLoggedIn, function (req, res) {
-    var title = req.sanitize(req.body.post["title"]);
-    var image = req.body.post["image"];
-    var desc = req.sanitize(req.body.post["dsc"]);
-    var author = {
-        id: req.user._id,
-        username: req.user.username
-    }
-    var newNews = {
-        title: title,
-        image: image,
-        description: desc,
-        author: author
-    }
-    plNews.create(newNews, function (err, newNews) {
-        // console.log(newNews);
-        if (err) {
-            console.log(err);
-            res.redirect("back");
-        } else {
-            res.redirect("/premire-league/news");
+router.post("/premire-league/news", middleware.isLoggedIn, upload.single('image'), function (req, res) {
+    cloudinary.uploader.upload(req.file.path, function (result) {
+        var title = req.sanitize(req.body.post["title"]);
+        var image = result.secure_url;
+        var desc = req.sanitize(req.body.post["dsc"]);
+        var author = {
+            id: req.user._id,
+            username: req.user.username
         }
+        var newNews = {
+            title: title,
+            image: image,
+            description: desc,
+            author: author
+        }
+        plNews.create(newNews, function (err, newNews) {
+            // console.log(newNews);
+            if (err) {
+                console.log(err);
+                res.redirect("back");
+            } else {
+                res.redirect("/premire-league/news");
+            }
+        });
     });
 });
 

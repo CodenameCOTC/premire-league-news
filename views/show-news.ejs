@@ -1,25 +1,31 @@
 <% include ./partials/header %>
- <div class="ui main text container">
-   	    <div class="ui huge header"><%=plNews.title%></div>
-        <div class="ui top attached segment">
-	        <div class="item">
-	           <img class="ui centered rounded image" src="<%= plNews.image %>">
-	            <div class="content">
-	                <div class="meta">
-    	                <span><%= plNews.created.toDateString() %></span>
-	                </div>
-            	     <div class="description">
-            	        <p><%- plNews.description %></p>
-            	     </div>
-	            </div>
+	<div class="ui main text container">
+		<div class="ui huge header">
+			<%=plNews.title%>
+		</div>
+		<div class="ui top attached segment">
+			<div class="item">
+				<img class="ui centered rounded image" src="<%= plNews.image %>">
+				<div class="content">
+					<div class="meta">
+						<span>
+							<%= plNews.created.toDateString() %>
+						</span>
+					</div>
+					<div class="description">
+						<p>
+							<%- plNews.description %>
+						</p>
+					</div>
+				</div>
 			</div>
 			<% if(currentUser && plNews.author.id.equals(currentUser._id) || currentUser && currentUser.isSuperAdmin) { %>
 				<a href="/premire-league/news/<%=plNews._id%>/edit" class="ui orange basic button">Update Blog</a>
-            <form style="display: inline" action="/premire-league/news/<%= plNews._id %>?_method=DELETE" method="POST">
-                <button class="ui red basic button" type="submit">Delete News</button>
-            </form>
-			<% } %>
-            
-        </div>        
-    </div>
-<% include ./partials/footer %>
+				<form style="display: inline" action="/premire-league/news/<%= plNews._id %>?_method=DELETE" method="POST">
+					<button class="ui red basic button" type="submit">Delete News</button>
+				</form>
+				<% } %>
+
+		</div>
+	</div>
+	<% include ./partials/footer %>

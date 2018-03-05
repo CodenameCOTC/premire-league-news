@@ -20,8 +20,8 @@ middlewareObj.checkPLNewsOwnership = function (req, res, next) {
     }
 }
 
-middlewareObj.isLoggedIn = function(req, res, next){
-    if(req.isAuthenticated()) {
+middlewareObj.isLoggedIn = function (req, res, next) {
+    if (req.isAuthenticated()) {
         return next();
     }
     res.redirect("back");

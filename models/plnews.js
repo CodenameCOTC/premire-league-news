@@ -4,7 +4,10 @@ var plNewsSchema = new mongoose.Schema({
     title: String,
     image: String,
     description: String,
-    created: {type: Date, default: Date.now},
+    created: {
+        type: Date,
+        default: Date.now
+    },
     author: {
         id: {
             type: mongoose.Schema.Types.ObjectId,

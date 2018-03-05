@@ -1,32 +1,36 @@
 <html>
-    <head>
-        <title>
-            Premire League News
-        </title>
-        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.4/semantic.min.css">
-        <link rel="stylesheet" href="../stylesheets/main.css">
-        <link href="https://cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet">
-    </head>
+
+<head>
+    <title>
+        Premire League News
+    </title>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.4/semantic.min.css">
+    <link rel="stylesheet" href="../stylesheets/main.css">
+    <link href="https://cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet">
+</head>
+
 </html>
 
 <body>
-        <div class="ui fixed inverted menu">
-                <div class="ui container">
-                    <div class="header item">
-                        <i class="code icon"></i> <a href="/">Premire League News</a></div>
-                    <a href="/premire-league/news" class="item">Home</a>
-                    
-                    <% if(!currentUser){ %>
-                        <a href="/login" class="item">Login</a>
-                        <a href="/register" class="item">Sign Up</a>
-                        
-                   <% }  else  { %>
-                        <a href="/premire-league/news/new" class="item">New Post</a>
-                        <a href="#" class="item">Signed In As: <%= currentUser.username %></a>
-                        <a href="/logout" class="item">Log Out</a>
-                   <% } %>
-                </div>
+    <div class="ui fixed inverted menu">
+        <div class="ui container">
+            <div class="header item">
+                <i class="code icon"></i>
+                <a href="/">Premire League News</a>
             </div>
-            <script src="//cdn.quilljs.com/1.3.5/quill.js"></script>
-            
-    
+            <a href="/premire-league/news" class="item">Home</a>
+
+            <% if(!currentUser){ %>
+                <a href="/login" class="item">Login</a>
+                <a href="/register" class="item">Sign Up</a>
+
+                <% }  else  { %>
+                    <a href="/premire-league/news/new" class="item">New Post</a>
+                    <a href="#" class="item">Signed In As:
+                        <%= currentUser.username %>
+                    </a>
+                    <a href="/logout" class="item">Log Out</a>
+                    <% } %>
+        </div>
+    </div>
+    <script src="//cdn.quilljs.com/1.3.5/quill.js"></script>
