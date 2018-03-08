@@ -1,26 +1,24 @@
 <% include ./partials/header %>
-<H1>Recent Feeds</H1>
-<div class="ui three column divided grid">
-    <div class="row">
+<a class="ui primary button" href="#"><h1>Recent Feeds</h1></a>
+<br>
+<br>
+<div class="ui grid">
+    <div class="two column large screen only row">
         <% plNews.forEach(function(news){ %>
       <div class="column">
+        <div class="ui segment">
           <h3 class="ui block header">
             <a href="/premire-league/news/<%= news._id %>">
-              <%= news.title.substring(0, 15) %>
+              <%= news.title.substring(0, 30) %>
             </a>
             </h3>
           <img class="ui middle aligned large image" src="<%= news.image %>">
-              
-      
-        
+        </div>                            
     </div>  
     <% }) %>
     </div>
     
-</div>
-  
-
-
+</div>  
 
 
     <% if (pages && pages > 0) { %>

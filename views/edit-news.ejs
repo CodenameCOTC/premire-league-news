@@ -1,5 +1,6 @@
 <% include ./partials/header %>
-
+<br>
+<br>
     <script src="https://cdn.ckeditor.com/ckeditor5/1.0.0-alpha.2/classic/ckeditor.js"></script>
 
     <div class="ui main text container segment">
@@ -17,7 +18,7 @@
             </div>
             <div class="field">
                 <label>Post Content</label>
-                <textarea rows="50" cols="100" name="news[description]" id="editor">
+                <textarea name="news[description]" id="editor">
                     <%= plNews.description %>
                 </textarea>
                 <script>

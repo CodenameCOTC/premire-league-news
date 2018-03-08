@@ -14,6 +14,7 @@ var express = require('express'),
 // REQUIRING ROUTES
 var plRoutes = require('./routes/premireleague');
 var indexRoutes = require('./routes/index');
+var commentRoutes = require('./routes/comments');
 
 // APP CONFIG
 mongoose.connect("mongodb://" + process.env.DB_USERNAME + ":" + process.env.DB_PASSWORD + "@ds155218.mlab.com:55218/plnews");
@@ -47,6 +48,7 @@ app.use(function (req, res, next) {
 
 app.use("/", plRoutes);
 app.use("/", indexRoutes);
+app.use("/", commentRoutes);
 
 app.get("/*", function (req, res) {
     res.send("error 404");

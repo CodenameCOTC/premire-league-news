@@ -40,7 +40,7 @@ router.get("/", function (req, res) {
 
 // RENDERING A PAGE TO SHOW ALL PL NEWS
 router.get("/premire-league/news", function (req, res) {
-    var perPage = 15;
+    var perPage = 16;
     var pageQuery = parseInt(req.query.page);
     var pageNumber = pageQuery ? pageQuery : 1;
     plNews.find({})
@@ -102,7 +102,7 @@ router.post("/premire-league/news", middleware.isLoggedIn, upload.single('image'
 
 //SHOWING PAGE NEWS
 router.get("/premire-league/news/:id", function (req, res) {
-    plNews.findById(req.params.id, function (err, foundNews) {
+    plNews.findById(req.params.id).populate("comments").exec(function (err, foundNews) {
         if (err) {
             console.log(err);
         } else {

@@ -1,15 +1,19 @@
 <% include ./partials/header %>
+<br>
+<br>
+<br>
+<br>
 	<div class="ui main text container">
-		<div class="ui huge header">
-			<%=plNews.title%>
-		</div>
 		<div class="ui top attached segment">
 			<div class="item">
+					<div class="ui huge header">
+							<%=plNews.title%>
+						</div>
 				<img class="ui centered rounded image" src="<%= plNews.image %>">
 				<div class="content">
 					<div class="meta">
 						<span>
-							<%= plNews.created.toDateString() %>
+							Created at: <%= plNews.created.toDateString() %>
 						</span>
 					</div>
 					<div class="description">
@@ -28,4 +32,38 @@
 
 		</div>
 	</div>
+	<% plNews.comments.forEach(function(comment){ %>
+	<div class="ui main text container">
+		<div class="ui top attached segment">
+							<div class="ui comments">
+						<!-- <div class="comment">
+						  <a class="avatar">
+							<img src="https://semantic-ui.com/images/avatar/small/stevie.jpg">
+						  </a> -->
+						  <div class="content">
+							<a class="author"><%= comment.author.username %></a>
+							<div class="metadata">
+							  <div class="date">2 days ago</div>
+							</div>
+							<div class="text">
+									<%= comment.text %>
+							</div>
+						  </div>
+						</div>
+					  </div>
+			
+		</div>
+	</div>
+	<% }) %>
+	<% if(currentUser){ %>
+	<div class="ui main text container segment">
+	<form class="ui reply form" action="/premire-league/news/<%= plNews._id %>/comments" method="POST">
+			<div class="ui huge header">Add New Comment to <%= plNews.title %></div>
+			<div class="field">
+				<input type="text" name="comment[text]" placeholder="Comments goes here" required>
+			</div>
+			<input class="ui violet big basic button" type="submit">
+		  </form>
+		  </div>
+	<% } %>
 	<% include ./partials/footer %>
