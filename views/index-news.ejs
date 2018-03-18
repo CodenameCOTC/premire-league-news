@@ -1,25 +1,32 @@
 <% include ./partials/header %>
-<a class="ui primary button" href="#"><h1>Recent Feeds</h1></a>
-<br>
-<br>
-<div class="ui grid">
-    <div class="two column large screen only row">
-        <% plNews.forEach(function(news){ %>
-      <div class="column">
-        <div class="ui segment">
-          <h3 class="ui block header">
-            <a href="/premire-league/news/<%= news._id %>">
-              <%= news.title.substring(0, 30) %>
-            </a>
-            </h3>
-          <img class="ui middle aligned large image" src="<%= news.image %>">
-        </div>                            
-    </div>  
-    <% }) %>
-    </div>
-    
-</div>  
 
+
+  <div class="container">
+    <!-- news feed -->
+    <div class="row">
+      <% plNews.forEach(function(news){ %>
+        <div class="col-6 col-sm-4">
+          <div class="card-group">
+            <div class="card">
+              <img class="card-img-top" src="<%= news.image %>" alt="Card image cap">
+              <div class="card-body">
+                <h5 class="card-title">
+                  <%= news.title %>
+                </h5>
+                <p class="card-text">
+                  <small class="text-muted">Created at: <%= news.created.toDateString() %></small>
+                </p>
+                <p class="lead">
+                  <a class="btn btn-dark" href="/premire-league/news/<%= news._id %>" role="button">Read more</a>
+                </p>
+              </div>
+            </div>
+          </div>
+          <br>
+        </div>
+        <% }) %>
+    </div>
+    <!-- end of news feed -->
 
     <% if (pages && pages > 0) { %>
       <div class="ui pagination menu">
@@ -28,13 +35,13 @@
           <% } else { %>
             <a class="item" href="/premire-league/news?page=1">First</a>
             <% } %>
-
+  
               <% if (current == 1) { %>
                 <a class="item">«</a>
                 <% } else { %>
                   <a class="item" href="/premire-league/news?page=<%= Number(current) - 1 %>">«</a>
                   <% } %>
-
+  
                     <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
                       <% if (i !== 1) { %>
                         <a class="disabled item">...</a>
@@ -54,13 +61,13 @@
                                     <a class="disabled item">...</a>
                                     <% } %>
                                       <% } %>
-
+  
                                         <% if (current == pages) { %>
                                           <a class="disabled item">»</a>
                                           <% } else { %>
                                             <a class="item" href="/premire-league/news?page=<%= Number(current) + 1 %>">»</a>
                                             <% } %>
-
+  
                                               <% if (current == pages) { %>
                                                 <a class="disabled item">Last</a>
                                                 <% } else { %>
@@ -69,6 +76,10 @@
       </div>
       <% } %>
 
+  </div>
+
+  
 
 
-        <% include ./partials/footer %>
+
+      <% include ./partials/footer %>

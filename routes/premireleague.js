@@ -40,7 +40,7 @@ router.get("/", function (req, res) {
 
 // RENDERING A PAGE TO SHOW ALL PL NEWS
 router.get("/premire-league/news", function (req, res) {
-    var perPage = 16;
+    var perPage = 6;
     var pageQuery = parseInt(req.query.page);
     var pageNumber = pageQuery ? pageQuery : 1;
     plNews.find({})
@@ -68,12 +68,12 @@ router.get("/premire-league/news", function (req, res) {
 
 
 // SHOWING FORM TO POST A NEW NEWS
-router.get("/premire-league/news/new", middleware.isLoggedIn, function (req, res) {
+router.get("/premire-league/news/new", middleware.isSuperAdmin, function (req, res) {
     res.render("new-news");
 });
 
 // HADLING POST NEWS
-router.post("/premire-league/news", middleware.isLoggedIn, upload.single('image'), function (req, res) {
+router.post("/premire-league/news", middleware.isLoggedIn, middleware.isSuperAdmin, upload.single('image'), function (req, res) {
     cloudinary.uploader.upload(req.file.path, function (result) {
         var title = req.sanitize(req.body.post["title"]);
         var image = result.secure_url;
@@ -116,7 +116,7 @@ router.get("/premire-league/news/:id", function (req, res) {
 // EDIT NEWS ROUTE
 
 // SHOWING FORM TO EDIT A NEWS
-router.get("/premire-league/news/:id/edit", middleware.checkPLNewsOwnership, function (req, res) {
+router.get("/premire-league/news/:id/edit", middleware.isSuperAdmin, function (req, res) {
     plNews.findById(req.params.id, function (err, foundNews) {
         if (err) {
             console.log(err);
@@ -130,7 +130,7 @@ router.get("/premire-league/news/:id/edit", middleware.checkPLNewsOwnership, fun
 });
 
 // HANDLING UPDATE NEWS
-router.put("/premire-league/news/:id", middleware.checkPLNewsOwnership, function (req, res) {
+router.put("/premire-league/news/:id", middleware.isSuperAdmin, function (req, res) {
     req.body.news.body = req.sanitize(req.body.news.body);
     var formData = req.body.news
     plNews.findByIdAndUpdate(req.params.id, formData, function (err, updateNews) {
@@ -145,7 +145,7 @@ router.put("/premire-league/news/:id", middleware.checkPLNewsOwnership, function
 
 // DESTROY NEWS ROUTE
 
-router.delete("/premire-league/news/:id", middleware.checkPLNewsOwnership, function (req, res) {
+router.delete("/premire-league/news/:id", middleware.isSuperAdmin, function (req, res) {
     plNews.findByIdAndRemove(req.params.id, function (err) {
         if (err) {
             console.log(err);

@@ -5,7 +5,7 @@ Current Stack:
 - Node.js  as a server side programming
 - Express.js as a frameworks
 - MongoDB as a database
-- Semantic-UI as a frontend frameworks
+- Semantic-UI as a frontend frameworks also Bootstrap4
 
 Current Features:
 - Everyone can posting
@@ -15,10 +15,6 @@ Current Features:
 
 Future Features:
 - Only admin & superAdmin can make a post
-- Only superAdmin who can select the headline
+- Search News
 - Register with Facebook & Google for normal user
-                          
-                          
-                          
-                          
-        
+- Only superAdmin who can select the headline

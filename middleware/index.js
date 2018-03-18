@@ -2,6 +2,16 @@ var plNews = require('../models/plnews');
 var Comment = require('../models/comment');
 var middlewareObj = {};
 
+middlewareObj.isSuperAdmin = function(req, res, next){
+    if(req.isAuthenticated()) {
+        if (req.user.isSuperAdmin) {
+            next();
+        } else {
+            res.redirect("back");
+        }
+    }
+}
+
 middlewareObj.checkPLNewsOwnership = function (req, res, next) {
     if (req.isAuthenticated()) {
         plNews.findById(req.params.id, function (err, foundNews) {

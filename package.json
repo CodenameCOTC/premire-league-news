@@ -4,6 +4,7 @@
   "description": "",
   "main": "app.js",
   "dependencies": {
+    "all": "0.0.0",
     "body-parser": "^1.18.2",
     "cloudinary": "^1.10.0",
     "dotenv": "^5.0.1",
