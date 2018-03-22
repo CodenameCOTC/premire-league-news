@@ -1,85 +1,89 @@
 <% include ./partials/header %>
 
 
-  <div class="container">
-    <!-- news feed -->
-    <div class="row">
-      <% plNews.forEach(function(news){ %>
-        <div class="col-6 col-sm-4">
-          <div class="card-group">
-            <div class="card">
-              <img class="card-img-top" src="<%= news.image %>" alt="Card image cap">
-              <div class="card-body">
-                <h5 class="card-title">
+
+    <div class="container">
+      <br>
+      <button class="btn btn-dark btn-lg btn-block" style="pointer-events: none;" type="button" disabled>News Feed</button>
+      <br>
+      <!-- news feed -->
+      <div class="row">
+        <% plNews.forEach(function(news){ %>
+          <div class="col-6 col-sm-4">
+            <div class="card-group">
+              <div class="card">
+                <img class="card-img-top" src="<%= news.image %>" alt="Card image cap">
+                <div class="card-body">
+                  <h5 class="card-title">
                   <%= news.title %>
                 </h5>
-                <p class="card-text">
-                  <small class="text-muted">Created at: <%= news.created.toDateString() %></small>
-                </p>
-                <p class="lead">
-                  <a class="btn btn-dark" href="/premire-league/news/<%= news._id %>" role="button">Read more</a>
-                </p>
+                  <p class="card-text">
+                    <small class="text-muted">Created at: <%= news.created.toDateString() %></small>
+                  </p>
+                  <p class="lead">
+                    <a class="btn btn-dark" href="/premire-league/news/<%= news._id %>" role="button">Read more</a>
+                  </p>
+                </div>
               </div>
             </div>
+            <br>
           </div>
-          <br>
-        </div>
-        <% }) %>
-    </div>
-    <!-- end of news feed -->
+          <% }) %>
+      </div>
+      <!-- end of news feed -->
 
-    <% if (pages && pages > 0) { %>
-      <div class="ui pagination menu">
-        <% if (current == 1) { %>
-          <a class="disabled item">First</a>
-          <% } else { %>
-            <a class="item" href="/premire-league/news?page=1">First</a>
-            <% } %>
-  
-              <% if (current == 1) { %>
-                <a class="item">«</a>
-                <% } else { %>
-                  <a class="item" href="/premire-league/news?page=<%= Number(current) - 1 %>">«</a>
-                  <% } %>
-  
-                    <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
-                      <% if (i !== 1) { %>
-                        <a class="disabled item">...</a>
-                        </li>
-                        <% } %>
-                          <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
-                            <% if (i == current) { %>
-                              <a class="item">
-                                <%= i %>
-                              </a>
-                              <% } else { %>
-                                <a class="item" href="/premire-league/news?page=<%= i %>">
+      <% if (pages && pages > 0) { %>
+        <div class="ui pagination menu">
+          <% if (current == 1) { %>
+            <a class="disabled item">First</a>
+            <% } else { %>
+              <a class="item" href="/premire-league/news?page=1">First</a>
+              <% } %>
+
+                <% if (current == 1) { %>
+                  <a class="item">«</a>
+                  <% } else { %>
+                    <a class="item" href="/premire-league/news?page=<%= Number(current) - 1 %>">«</a>
+                    <% } %>
+
+                      <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+                        <% if (i !== 1) { %>
+                          <a class="disabled item">...</a>
+                          </li>
+                          <% } %>
+                            <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+                              <% if (i == current) { %>
+                                <a class="item">
                                   <%= i %>
                                 </a>
-                                <% } %>
-                                  <% if (i == Number(current) + 4 && i < pages) { %>
-                                    <a class="disabled item">...</a>
-                                    <% } %>
+                                <% } else { %>
+                                  <a class="item" href="/premire-league/news?page=<%= i %>">
+                                    <%= i %>
+                                  </a>
+                                  <% } %>
+                                    <% if (i == Number(current) + 4 && i < pages) { %>
+                                      <a class="disabled item">...</a>
                                       <% } %>
-  
-                                        <% if (current == pages) { %>
-                                          <a class="disabled item">»</a>
-                                          <% } else { %>
-                                            <a class="item" href="/premire-league/news?page=<%= Number(current) + 1 %>">»</a>
-                                            <% } %>
-  
-                                              <% if (current == pages) { %>
-                                                <a class="disabled item">Last</a>
-                                                <% } else { %>
-                                                  <a class="item" href="/premire-league/news?page=<%= pages %>">Last</a>
-                                                  <% } %>
-      </div>
-      <% } %>
+                                        <% } %>
 
-  </div>
+                                          <% if (current == pages) { %>
+                                            <a class="disabled item">»</a>
+                                            <% } else { %>
+                                              <a class="item" href="/premire-league/news?page=<%= Number(current) + 1 %>">»</a>
+                                              <% } %>
 
-  
+                                                <% if (current == pages) { %>
+                                                  <a class="disabled item">Last</a>
+                                                  <% } else { %>
+                                                    <a class="item" href="/premire-league/news?page=<%= pages %>">Last</a>
+                                                    <% } %>
+        </div>
+        <% } %>
+    </div>
 
 
 
-      <% include ./partials/footer %>
+
+
+
+  <% include ./partials/footer %>

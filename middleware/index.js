@@ -7,6 +7,7 @@ middlewareObj.isSuperAdmin = function(req, res, next){
         if (req.user.isSuperAdmin) {
             next();
         } else {
+            req.flash("error", "You don't have permission do that shit dude!");
             res.redirect("back");
         }
     }
@@ -50,6 +51,7 @@ middlewareObj.isLoggedIn = function (req, res, next) {
     if (req.isAuthenticated()) {
         return next();
     }
+    req.flash("error", "You need to be logged in to do that dude!");
     res.redirect("back");
 }
 

@@ -41,7 +41,7 @@
                 Singed In As: <%= currentUser.username %>
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <% if(currentUser && currentUser.isSuperAdmin) {%> 
+                  <% if(currentUser && currentUser.isSuperAdmin) {%>
                 <a class="dropdown-item" href="/premire-league/news/new">Create New News</a>
                 <% } %>
                 <a class="dropdown-item" href="/logout">Logout</a>
@@ -56,9 +56,20 @@
         </ul>
       </div>
     </nav>
+    <div class="container">
 
+        <% if(error && error.length > 0){ %>
+            <div class="alert alert-danger" role="alert">
+                <%= error %>
+            </div>
+        <% } %>
+        <% if(success && success.length > 0){ %>
+            <div class="alert alert-success" role="alert">
+                <%= success %>
+            </div>
+        <% } %>
+    </div>
     
-    <br>
 
     <!-- bootstrap js -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

@@ -1,32 +1,32 @@
 <% include ./partials/header %>
-    <script src="https://cdn.ckeditor.com/ckeditor5/1.0.0-alpha.2/classic/ckeditor.js"></script>
+  <script src="https://cdn.ckeditor.com/ckeditor5/1.0.0-alpha.2/classic/ckeditor.js"></script>
 
-    <div class="ui main text container segment">
-        <div class="ui huge header">Post News</div>
-        <form class="ui form" action="/premire-league/news" method="POST" enctype="multipart/form-data">
-            <div class="field">
-                <label>Title</label>
-                <input type="text" name="post[title]" placeholder="title">
-            </div>
-            <div class="field">
-                <label>Image</label>
-                <input type="file" id="image" name="image" accept="image/*" required>
-            </div>
-            <div class="field">
-                <label>Post Content</label>
-                <textarea rows="50" cols="100" name="post[dsc]" id="editor"></textarea>
-                <script>
-                    ClassicEditor
-                        .create(document.querySelector('#editor'))
-                        .catch(error => {
-                            console.error(error);
-                        });
-                </script>
-            </div>
-            <input class="ui violet big basic button" type="submit">
-        </form>
-    </div>
+  <div class="ui main text container segment">
+    <div class="ui huge header">Post News</div>
+    <form class="ui form" action="/premire-league/news" method="POST" enctype="multipart/form-data">
+      <div class="field">
+        <label>Title</label>
+        <input type="text" name="post[title]" placeholder="title">
+      </div>
+      <div class="field">
+        <label>Image</label>
+        <input type="file" id="image" name="image" accept="image/*" required>
+      </div>
+      <div class="field">
+        <label>Post Content</label>
+        <textarea rows="50" cols="100" name="post[dsc]" id="editor"></textarea>
+        <script>
+          ClassicEditor
+            .create(document.querySelector('#editor'))
+            .catch(error => {
+              console.error(error);
+            });
+        </script>
+      </div>
+      <input class="ui violet big basic button" type="submit">
+    </form>
+  </div>
 
 
 
-    <% include ./partials/footer %>
+  <% include ./partials/footer %>

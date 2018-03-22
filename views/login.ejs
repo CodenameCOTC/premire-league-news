@@ -1,35 +1,37 @@
 <% include ./partials/header %>
-    <div class="container">
-    <div class="jumbotron jumbotron-fluid">
-      <h3>Login</h3>
+  <div class="container">
+    <div class="jumbotron">
+      <span class="d-inline-block" data-toggle="popover" data-content="Disabled popover">
+  <button class="btn btn-dark btn-lg" style="pointer-events: none;" type="button" disabled>Login</button>
+</span>
       <form action="/login" method="POST">
-    <div class="form-row align-items-center">
-      <div class="col-auto">
-        <label class="sr-only" for="inlineFormInputGroup">Email</label>
-        <div class="input-group mb-2">
-          <div class="input-group-prepend">
-            <div class="input-group-text">Email</div>
+        <div class="form-row align-items-center">
+          <div class="col-auto">
+            <label class="sr-only" for="inlineFormInputGroup">Username</label>
+            <div class="input-group mb-2">
+              <div class="input-group-prepend">
+                <div class="input-group-text">Username</div>
+              </div>
+              <input type="text" name="username" class="form-control" id="inlineFormInputGroup" placeholder="Username">
+            </div>
           </div>
-          <input type="text" name="username" class="form-control" id="inlineFormInputGroup" placeholder="Password">
-        </div>
-      </div>
-      <div class="col-auto">
-        <label class="sr-only" for="inlineFormInputGroup">Password</label>
-        <div class="input-group mb-2">
-          <div class="input-group-prepend">
-            <div class="input-group-text">Password</div>
+          <div class="col-auto">
+            <label class="sr-only" for="inlineFormInputGroup">Password</label>
+            <div class="input-group mb-2">
+              <div class="input-group-prepend">
+                <div class="input-group-text">Password</div>
+              </div>
+              <input type="password" name="password" class="form-control" id="inlineFormInputGroup" placeholder="Password">
+            </div>
           </div>
-          <input type="password" name="password" class="form-control" id="inlineFormInputGroup" placeholder="Password">
+          <div class="col-auto">
+            <button type="submit" class="btn btn-primary mb-2">Login</button>
+          </div>
         </div>
-      </div>
-      <div class="col-auto">
-        <button type="submit" class="btn btn-primary mb-2">Login</button>
-      </div>
+      </form>
     </div>
-  </form>
-</div>
-</div>
+  </div>
 
 
 
-    <% include ./partials/footer %>
+  <% include ./partials/footer %>
