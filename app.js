@@ -1,21 +1,23 @@
-var express = require('express'),
-    app = express(),
-    faker = require('faker'),
-    bodyParser = require('body-parser'),
-    mongoose = require('mongoose'),
-    flash = require('connect-flash'),
-    expressSanitizer = require('express-sanitizer'),
-    methodOverride = require('method-override'),
-    passport = require('passport'),
-    LocalStrategy = require('passport-local'),
-    plNews = require('./models/plnews'),
-    User = require('./models/user'),
-    PORT = process.env.PORT || 50000;
+const   express = require('express'),
+        app = express(),
+        faker = require('faker'),
+        bodyParser = require('body-parser'),
+        mongoose = require('mongoose'),
+        flash = require('connect-flash'),
+        favicon = require('serve-favicon'),
+        path = require('path'),
+        expressSanitizer = require('express-sanitizer'),
+        methodOverride = require('method-override'),
+        passport = require('passport'),
+        LocalStrategy = require('passport-local'),
+        plNews = require('./models/plnews'),
+        User = require('./models/user'),
+        PORT = process.env.PORT || 50000;
 
 // REQUIRING ROUTES
-var plRoutes = require('./routes/premireleague');
-var indexRoutes = require('./routes/index');
-var commentRoutes = require('./routes/comments');
+const plRoutes = require('./routes/premireleague');
+const indexRoutes = require('./routes/index');
+const commentRoutes = require('./routes/comments');
 
 // APP CONFIG
 mongoose.connect(process.env.DB);
@@ -28,6 +30,7 @@ app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(flash());
 app.use(methodOverride('_method'));
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 require('dotenv').config();
 
 // PASSPORT CONFIGURATION
@@ -54,9 +57,9 @@ app.use("/", indexRoutes);
 app.use("/", commentRoutes);
 
 app.get("/*", function (req, res) {
-    res.send("error 404");
+    req.flash("error", "404! Page that you're looking for is not found");
+    res.redirect("/premire-league/news");
 })
 app.listen(PORT, function () {
-    console.log("PL-NEWS SITE STARTING TO ONLINE!: " + PORT);
-
+    console.log("PL-NEWS SITE STARTING TO ONLINE!: 127.0.0.1:" + PORT);
 });

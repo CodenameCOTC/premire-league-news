@@ -1,4 +1,4 @@
-var express = require('express'),
+const express = require('express'),
   router = express.Router(),
   passport = require('passport'),
   middleware = require('../middleware'),
@@ -11,7 +11,7 @@ router.get("/register", function(req, res) {
 
 // HANDLING REGISTER LOGIC
 router.post("/register", function(req, res) {
-  var newUser = new User({
+  let newUser = new User({
     username: req.body.username
   });
   User.register(newUser, req.body.password, function(err, user) {
@@ -20,7 +20,7 @@ router.post("/register", function(req, res) {
       return res.redirect("back");
     }
     passport.authenticate("local")(req, res, function() {
-      req.flash("success", "Hi " + user.username + " , welcome to the family!");
+      req.flash("success", "Welcome " + user.username + " to Premire League News!");
       res.redirect("/premire-league/news");
     });
   });
@@ -39,7 +39,7 @@ router.post("/login", passport.authenticate("local", {
 
 // LOGOUT ROUTES
 
-router.get("/logout", function(req, res) {
+router.get("/logout", middleware.isLoggedIn, function(req, res) {
   req.flash("success", "Logged you out! see you soon " + req.user.username + "!");
   req.logout();
   res.redirect("back");

@@ -30,19 +30,65 @@ var upload = multer({
 var cloudinary = require('cloudinary');
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.API_KEY
-  api_secret: process.env.API_SECRET
+  api_key: process.env.API_KEY,
+  api_secret: process.env.DB.API_SECRET
 });
 
 router.get("/", function(req, res) {
-  res.render("landing-page");
+  res.redirect("/premire-league/news");
 });
 
 // RENDERING A PAGE TO SHOW ALL PL NEWS
-router.get("/premire-league/news", function(req, res) {
-  var perPage = 6;
-  var pageQuery = parseInt(req.query.page);
-  var pageNumber = pageQuery ? pageQuery : 1;
+router.get("/premire-league/news", function(req, res) {    
+  if(req.query.Search) {
+    let keywords = req.query.Search.split(" ").join("+");
+    let noMatch = null;
+    let regex = new RegExp(escapeRegex(req.query.Search), 'gi');
+    const perPage = 8;
+    let pageQuery = parseInt(req.query.page);
+    let pageNumber = pageQuery ? pageQuery : 1;
+    plNews.find({tags: regex})
+      .sort({
+        created: -1
+      })
+      .skip((perPage * pageNumber) - perPage)
+      .limit(perPage)
+      .exec(function(err, news) {
+        plNews.count({tags: regex},(function(err, count) {
+          if (err) {
+            console.log(err);
+            res.redirect("back");
+          } else {
+            if (news.length < 1) {
+              
+              noMatch = "Sorry no news match with your criteria: " + req.query.Search
+              req.flash("error", noMatch);
+              res.render("index-news", {
+                plNews: news,
+                current: pageNumber,
+                pages: Math.ceil(count / perPage),
+                Search: keywords,
+                error: req.flash("error")
+
+              });
+            } else {              
+              req.flash("success", "We found " + count + " article match with your keywords: " + req.query.Search);
+              res.render("index-news", {
+              plNews: news,
+              current: pageNumber,
+              pages: Math.ceil(count / perPage),
+              Search: keywords,
+              success: req.flash("success")
+
+            });
+          }
+          }
+        }));
+      });
+  } else {
+  const perPage = 8;
+  let pageQuery = parseInt(req.query.page);
+  let pageNumber = pageQuery ? pageQuery : 1;
   plNews.find({})
     .sort({
       created: -1
@@ -50,9 +96,10 @@ router.get("/premire-league/news", function(req, res) {
     .skip((perPage * pageNumber) - perPage)
     .limit(perPage)
     .exec(function(err, news) {
-      plNews.count().exec(function(err, count) {
+      plNews.count((function(err, count) {
         if (err) {
           console.log(err);
+          res.redirect("back")
         } else {
           res.render("index-news", {
             plNews: news,
@@ -60,41 +107,43 @@ router.get("/premire-league/news", function(req, res) {
             pages: Math.ceil(count / perPage)
           });
         }
-      });
+      }));
     });
+  }
 });
 
 
 
 
 // SHOWING FORM TO POST A NEW NEWS
-router.get("/premire-league/news/new", middleware.isSuperAdmin, function(req, res) {
+router.get("/premire-league/news/new", middleware.isLoggedIn, middleware.isSuperAdmin, function(req, res) {
   res.render("new-news");
 });
 
 // HADLING POST NEWS
-router.post("/premire-league/news", middleware.isSuperAdmin, upload.single('image'), function(req, res) {
+router.post("/premire-league/news", middleware.isLoggedIn, middleware.isSuperAdmin, upload.single('image'), function(req, res) {
   cloudinary.uploader.upload(req.file.path, function(result) {
-    var title = req.sanitize(req.body.post["title"]);
-    var image = result.secure_url;
-    var desc = req.sanitize(req.body.post["dsc"]);
-    var author = {
+    let title = req.sanitize(req.body.post.title);
+    let image = result.secure_url;
+    let desc = req.sanitize(req.body.post.dsc);
+    let tags = req.body.post.tags.split(",");
+    let author = {
       id: req.user._id,
       username: req.user.username
     }
-    var newNews = {
+    let newNews = {
       title: title,
       image: image,
       description: desc,
+      tags: tags,
       author: author
     }
     plNews.create(newNews, function(err, newNews) {
-      // console.log(newNews);
       if (err) {
         req.flash("error", err.message);
         res.redirect("back");
       } else {
-        req.flash("success", "Grats " + newNews.title + " has successfully created!");
+        req.flash("success", "Grats! " + newNews.title + " has successfully created");
         res.redirect("/premire-league/news");
       }
     });
@@ -105,8 +154,8 @@ router.post("/premire-league/news", middleware.isSuperAdmin, upload.single('imag
 router.get("/premire-league/news/:id", function(req, res) {
   plNews.findById(req.params.id).populate("comments").exec(function(err, foundNews) {
     if (err) {
-      req.flash("error", "Ooops article that you're looking for is not found, were so sorry dude! Please don't go crying to ur mama");
-      res.redirect("back");
+      req.flash("error", "Ooops article that you're looking for is not found...");
+      res.redirect("/premire-league/news");
     } else {
       res.render("show-news", {
         plNews: foundNews
@@ -122,7 +171,7 @@ router.get("/premire-league/news/:id/edit", middleware.isLoggedIn, middleware.is
   plNews.findById(req.params.id, function(err, foundNews) {
     if (err) {
       req.flash("errorr", err.message);
-      res.redirect("back");
+      res.redirect("/premire-league/news");
     } else {
       res.render("edit-news", {
         plNews: foundNews
@@ -133,14 +182,13 @@ router.get("/premire-league/news/:id/edit", middleware.isLoggedIn, middleware.is
 
 // HANDLING UPDATE NEWS
 router.put("/premire-league/news/:id", middleware.isSuperAdmin, function(req, res) {
-  req.body.news.body = req.sanitize(req.body.news.body);
-  var formData = req.body.news
+  let formData = req.body.news
   plNews.findByIdAndUpdate(req.params.id, formData, function(err, updateNews) {
     if (err) {
-      req.flash("error", "Ooops article that you're looking to be edited is not found, sorry...")
+      req.flash("error", err)
       res.redirect("back");
     } else {
-      req.flash("success", "You've successfully editing the news");
+      req.flash("success", "You've successfully editing: " + "'" + updateNews.title + "'");
       res.redirect("/premire-league/news");
     }
   });
@@ -148,15 +196,19 @@ router.put("/premire-league/news/:id", middleware.isSuperAdmin, function(req, re
 
 // DESTROY NEWS ROUTE
 
-router.delete("/premire-league/news/:id", middleware.isSuperAdmin, function(req, res) {
-  plNews.findByIdAndRemove(req.params.id, function(err) {
+router.delete("/premire-league/news/:id", middleware.isLoggedIn, middleware.isSuperAdmin, function(req, res) {
+  plNews.findByIdAndRemove(req.params.id, function(err, deletedNews) {
     if (err) {
       req.flash("error", err.message);
     } else {
-      req.flash("success", "News successfully deleted")
+      req.flash("success", "You just deleted: " + deletedNews.title);
       res.redirect("/premire-league/news");
     }
   });
 });
+
+function escapeRegex(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};
 
 module.exports = router;

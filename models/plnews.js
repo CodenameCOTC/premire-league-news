@@ -4,6 +4,7 @@ var plNewsSchema = new mongoose.Schema({
     title: String,
     image: String,
     description: String,
+    tags: [String],
     created: {
         type: Date,
         default: Date.now

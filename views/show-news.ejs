@@ -1,81 +1,77 @@
 <% include ./partials/header %>
 
-  <div class="ui main text container">
-    <div class="ui top attached segment">
-      <div class="item">
-        <div class="ui huge header">
-          <%=plNews.title%>
-        </div>
-        <img class="ui centered rounded image" src="<%= plNews.image %>">
-        <div class="content">
-          <div class="meta">
-            <span>
-							Created at: <%= plNews.created.toDateString() %>
-						</span>
-          </div>
-          <div class="description">
-            <p>
-              <%- plNews.description %>
-            </p>
-          </div>
-        </div>
-      </div>
-      <% if(currentUser && plNews.author.id.equals(currentUser._id) || currentUser && currentUser.isSuperAdmin) { %>
-        <a href="/premire-league/news/<%=plNews._id%>/edit" class="ui orange basic button">Edit News</a>
-        <form style="display: inline" action="/premire-league/news/<%= plNews._id %>?_method=DELETE" method="POST">
-          <button class="ui red basic button" type="submit">Delete News</button>
-        </form>
-        <% } %>
+        <div class="container">
+          <div class="row justify-content-center">
+          <div class="col-sm-8 border" id="divShowNews">
 
-    </div>
-  </div>
-
-  <div class="ui main text container">
-
-    <div class="ui top attached segment">
-      <span class="d-inline-block" data-toggle="popover" data-content="Disabled popover">
-  <button class="btn btn-lg btn-dark" style="pointer-events: none;" type="button" disabled>Comments Feed</button>
-</span>
-      <% plNews.comments.forEach(function(comment){ %>
-        <div class="ui comments">
-          <div class="comment">
-            <!-- <a class="avatar">
-							<img class="avatar" src="https://semantic-ui.com/images/avatar/small/stevie.jpg">
-						  </a> -->
-            <div class="content">
-              <span class="d-inline-block" data-toggle="popover" data-content="Disabled popover">
-  					<button class="btn btn-xs btn-outline-dark" style="pointer-events: none;" type="button" disabled><%= comment.author.username.toUpperCase() %></button>
-						</span>
-              <div class="metadata">
-                <div class="date">
-                  <%= comment.created.toDateString() %>
+          
+          
+              <h1 class="text-left"><%= plNews.title %></h1>
+              <img src="<%= plNews.image %>" id="newsImages" class="img-fluid">
+              <p class="text-secondary">Posted by 👨‍🎓 <b><i><%= plNews.author.username %><i></b> 📅 <%= plNews.created.toDateString() %></p>
+              <div class="description">
+                <%- plNews.description %>
+              </div>
+              <% if (currentUser && currentUser.isSuperAdmin) { %>
+                    <form id="deleteBtnShowNews" action="/premire-league/news/<%= plNews._id %>?_method=DELETE" method="POST">  
+                  <button type="submit" id="actionComment" class="btn btn-danger">Delete</button>
+                      </form>
+                      <div class="float-right">
+                      <form action="/premire-league/news/<%=plNews._id%>/edit">
+                        
+                    <button type="submit" id="actionComment" class="btn btn-warning">Edit</button>
+                  </form>
+                  </div>
+                <% } %>
                 </div>
               </div>
-              <div class="text">
-                <i>
-									<%= comment.text %>
-								</i>
-                <% if (currentUser && comment.author.id.equals(currentUser._id) || currentUser && currentUser.isSuperAdmin) { %>
-                  <a href="/premire-league/news/<%=plNews._id%>/comments/<%= comment._id %>/edit" class="btn btn-xs btn-outline-warning">Edit Comments</a>
-                  <form style="display: inline" action="/premire-league/news/<%= plNews._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
-                    <button class="btn btn-xs btn-outline-danger" type="submit">Delete Comments</button>
-                  </form>
-                  <% } %>
-              </div>
+        
+            
+        
+                <div class="row justify-content-center">
+            <div class="col-sm-8 border">
+            <a id="commentsfeed" class="btn btn-outline-dark btn-block">Comments Feed</a>
+            <% if (currentUser) { %>
+              <form action="/premire-league/news/<%= plNews._id %>/comments" method="POST">
+              <div class="form-group">
+                  <a id="addcomments" class="btn btn-dark btn-block"><b><i>Add a comments</i></b></a>
+                  <textarea class="form-control" name="comment[text]" rows="3" placeholder="Write your comment here"></textarea>
+                  <input class="btn btn-info btn-lg btn-block" type="submit">
+                </div>
+              </form> 
+            <% } else { %>
+              <div class="alert alert-danger" role="alert">
+                  Please <a class="alert-link" href="/login">login</a> or <a class="alert-link" href="/register">sign up</a> so you can add a comment! 
+               </div>
+              <% } %>
+              
+              
+              <ul class="list-unstyled">
+                  <% plNews.comments.forEach(function(comment){ %>
+                  <li class="media">
+                    <img class="mr-3" id="avatar" src="http://www.dcsportsfan.com/siteresources/images/defaultavatar.jpg" alt="Generic placeholder image">
+                    <div class="media-body">
+                      <h5 class="mt-0 mb-1" id="commentUsername"><%= comment.author.username %></h5>
+                      <%= comment.text %>
+                      <p class="text-secondary" id="commentCreated">📅 <%= comment.created.toDateString() %></p>
+                    </div>
+                  </li>
+                  <% if (currentUser && comment.author.id.equals(currentUser._id) || currentUser && currentUser.isSuperAdmin) { %>
+                    <div class="btn-group" role="group" id="buttonCommentAct">
+                        <form action="/premire-league/news/<%= plNews._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">  
+                      <button type="submit" id="actionComment" class="btn btn-danger">Delete</button>
+                          </form>
+                          <form action="/premire-league/news/<%=plNews._id%>/comments/<%= comment._id %>/edit">
+                        <button type="submit" id="actionComment" class="btn btn-danger">Edit</button>
+                      </form>
+                      </div>
+                    <% } %>
+                  <% }) %>
+              </ul>
             </div>
           </div>
-          <% }) %>
-            <% if(currentUser){ %>
-              <form class="ui reply form" action="/premire-league/news/<%= plNews._id %>/comments" method="POST">
-                <div class="ui huge header">Add New Comment to this article </div>
-                <div class="field">
-                  <textarea class="field" name="comment[text]" required></textarea>
-                </div>
-                <input class="ui violet big basic button" type="submit">
-              </form>
-              <% } %>
-        </div>
-
+    </div>
+      
 
 
 

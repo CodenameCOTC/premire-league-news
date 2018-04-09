@@ -1,4 +1,4 @@
-var express = require('express'),
+const express = require('express'),
   router = express.Router({
     mergeParams: true
   }),
@@ -6,9 +6,9 @@ var express = require('express'),
   Comment = require('../models/comment'),
   middleware = require('../middleware');
 
-router.get('/premire-league/news/:id/comments/new', middleware.isLoggedIn, function(req, res) {
+router.get('/premire-league/news/:id/comments/new', middleware.isLoggedIn, function (req, res) {
   // FIND NEWS by ID
-  PLNews.findById(req.params.id, function(err, news) {
+  PLNews.findById(req.params.id, function (err, news) {
     if (err) {
       req.flash("error", err.message);
       res.redirect("back");
@@ -20,13 +20,16 @@ router.get('/premire-league/news/:id/comments/new', middleware.isLoggedIn, funct
   });
 });
 
-router.post('/premire-league/news/:id/comments', middleware.isLoggedIn, function(req, res) {
-  PLNews.findById(req.params.id, function(err, news) {
+router.post('/premire-league/news/:id/comments', middleware.isLoggedIn, function (req, res) {
+  let comment = {
+    text: req.sanitize(req.body.comment.text)
+  }
+  PLNews.findById(req.params.id, function (err, news) {
     if (err) {
       req.flash("error", err.message);
       res.redirect('back');
     } else {
-      Comment.create(req.body.comment, function(err, comment) {
+      Comment.create(comment, function (err, comment) {
         if (err) {
           req.flash("error", err.message);
           res.redirect("back");
@@ -45,8 +48,8 @@ router.post('/premire-league/news/:id/comments', middleware.isLoggedIn, function
 });
 
 // COMMENTS EDIT ROUTE
-router.get('/premire-league/news/:newsID/comments/:comment_id/edit', middleware.isLoggedIn, middleware.checkCommentOwnership, function(req, res) {
-  Comment.findById(req.params.comment_id, function(err, foundComment) {
+router.get('/premire-league/news/:newsID/comments/:comment_id/edit', middleware.isLoggedIn, middleware.checkCommentOwnership, function (req, res) {
+  Comment.findById(req.params.comment_id, function (err, foundComment) {
     if (err) {
       req.flash("error", err.message);
       res.redirect("back");
@@ -59,8 +62,8 @@ router.get('/premire-league/news/:newsID/comments/:comment_id/edit', middleware.
   })
 })
 
-router.put("/premire-league/news/:newsID/comments/:comment_id", middleware.isLoggedIn, middleware.checkCommentOwnership, function(req, res) {
-  Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, updateComment) {
+router.put("/premire-league/news/:newsID/comments/:comment_id", middleware.isLoggedIn, middleware.checkCommentOwnership, function (req, res) {
+  Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function (err, updateComment) {
     if (err) {
       res.redirect('back');
     } else {
@@ -70,8 +73,8 @@ router.put("/premire-league/news/:newsID/comments/:comment_id", middleware.isLog
   });
 });
 
-router.delete('/premire-league/news/:newsID/comments/:comment_id', middleware.isLoggedIn, middleware.checkCommentOwnership, function(req, res) {
-  Comment.findByIdAndRemove(req.params.comment_id, function(err) {
+router.delete('/premire-league/news/:newsID/comments/:comment_id', middleware.isLoggedIn, middleware.checkCommentOwnership, function (req, res) {
+  Comment.findByIdAndRemove(req.params.comment_id, function (err) {
     if (err) {
       req.flash("error", err.message);
       res.redirect('back');
