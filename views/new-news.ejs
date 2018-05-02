@@ -1,33 +1,33 @@
 <% include ./partials/header %>
-<script src="https://cdn.ckeditor.com/4.9.1/full/ckeditor.js"></script>
+  <script src="https://cdn.ckeditor.com/4.9.1/full/ckeditor.js"></script>
 
   <div class="container justify-content-center">
-  <form action="/premire-league/news" method="POST" enctype="multipart/form-data">
-  <div class="form-group">
-    <label for="Title">Title</label>
-    <input type="text" class="form-control" placeholder="Title" name="post[title]">
-    <small class="form-text text-muted">This field is required</small>
-    </div>
-    <div class="custom-file">
+    <form action="/premire-league/news" method="POST" enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="Title">Title</label>
+        <input type="text" class="form-control" placeholder="Title" name="post[title]">
+        <small class="form-text text-muted">This field is required</small>
+      </div>
+      <div class="custom-file">
         <label for="Images">Image</label>
         <input type="file" name="image" accept="image/*" required>
-        
-        </div>
 
-        <div class="form-group">
-            <label for="Tags">Tags</label>
-            <input type="text" class="form-control" placeholder="Tags separated by comma" name="post[tags]">
-            <small class="form-text text-muted">This field is required</small>
-          </div>
+      </div>
 
-            <div class="form-group">
-                <label for="Content">News Content</label>
-                <textarea class="form-control" placeholder="News Content Here" id="editor1" name="post[dsc]"></textarea>
-                <script>
-                    CKEDITOR.replace( 'editor1' );
-                  </script>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+      <div class="form-group">
+        <label for="Tags">Tags</label>
+        <input type="text" class="form-control" placeholder="Tags separated by comma" name="post[tags]">
+        <small class="form-text text-muted">This field is required</small>
+      </div>
+
+      <div class="form-group">
+        <label for="Content">News Content</label>
+        <textarea class="form-control" placeholder="News Content Here" id="editor1" name="post[dsc]"></textarea>
+        <script>
+          CKEDITOR.replace('editor1');
+        </script>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
     </form>
   </div>
   </div>

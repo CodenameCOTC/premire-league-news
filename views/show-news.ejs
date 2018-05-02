@@ -1,81 +1,91 @@
 <% include ./partials/header %>
 
-        <div class="container">
-          <div class="row justify-content-center">
-          <div class="col-sm-8 border" id="divShowNews">
-
-          
-          
-              <h1 class="text-left"><%= plNews.title %></h1>
-              <img src="<%= plNews.image %>" id="newsImages" class="img-fluid">
-              <p class="text-secondary">Posted by 👨‍🎓 <b><i><%= plNews.author.username %><i></b> 📅 <%= plNews.created.toDateString() %></p>
-              <div class="description">
-                <%- plNews.description %>
-              </div>
-              <% if (currentUser && currentUser.isSuperAdmin) { %>
-                    <form id="deleteBtnShowNews" action="/premire-league/news/<%= plNews._id %>?_method=DELETE" method="POST">  
-                  <button type="submit" id="actionComment" class="btn btn-danger">Delete</button>
-                      </form>
-                      <div class="float-right">
-                      <form action="/premire-league/news/<%=plNews._id%>/edit">
-                        
-                    <button type="submit" id="actionComment" class="btn btn-warning">Edit</button>
-                  </form>
-                  </div>
-                <% } %>
-                </div>
-              </div>
-        
-            
-        
-                <div class="row justify-content-center">
-            <div class="col-sm-8 border">
-            <a id="commentsfeed" class="btn btn-outline-dark btn-block">Comments Feed</a>
-            <% if (currentUser) { %>
-              <form action="/premire-league/news/<%= plNews._id %>/comments" method="POST">
-              <div class="form-group">
-                  <a id="addcomments" class="btn btn-dark btn-block"><b><i>Add a comments</i></b></a>
-                  <textarea class="form-control" name="comment[text]" rows="3" placeholder="Write your comment here"></textarea>
-                  <input class="btn btn-info btn-lg btn-block" type="submit">
-                </div>
-              </form> 
-            <% } else { %>
-              <div class="alert alert-danger" role="alert">
-                  Please <a class="alert-link" href="/login">login</a> or <a class="alert-link" href="/register">sign up</a> so you can add a comment! 
-               </div>
-              <% } %>
-              
-              
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-sm-8 border" id="divShowNews">
+        <h3 class="text-center">
+          <%= plNews.title %>
+        </h3>
+        <img src="<%= plNews.image %>" id="newsImages" class="img-fluid rounded mx-auto d-block">
+        <p class="text-secondary">Posted by 👨‍🎓
+          <b>
+            <i>
+              <%= plNews.author.username %>
+                <i>
+          </b> 📅
+          <%= moment(plNews.created).fromNow() %>
+        </p>
+        <div class="description">
+          <%- plNews.description %>
+        </div>
+        <% if (currentUser && currentUser.isSuperAdmin) { %>
+          <form id="deleteBtnShowNews" action="/premire-league/news/<%= plNews._id %>?_method=DELETE" method="POST">
+            <button type="submit" id="actionComment" class="btn btn-danger">Delete</button>
+          </form>
+          <div class="float-right">
+            <form action="/premire-league/news/<%=plNews._id%>/edit">
+              <button type="submit" id="actionComment" class="btn btn-warning">Edit</button>
+            </form>
+          </div>
+          <% } %>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-sm-8 border">
+        <a id="commentsfeed" class="btn btn-outline-dark btn-block">Comments Feed</a>
+        <% if (currentUser) { %>
+          <form action="/premire-league/news/<%= plNews._id %>/comments" method="POST">
+            <div class="form-group">
+              <a id="addcomments" class="btn btn-dark btn-block">
+                <b>
+                  <i>Add a comments</i>
+                </b>
+              </a>
+              <textarea class="form-control" name="comment[text]" id="commentForm" rows="3" placeholder="Write your comment here"></textarea>
+              <input class="btn btn-info btn-lg btn-block" type="submit">
+            </div>
+          </form>
+          <% } else { %>
+            <div class="alert alert-danger" role="alert">
+              Please
+              <a class="alert-link" href="/login">login</a> or
+              <a class="alert-link" href="/register">sign up</a> so you can add a comment!
+            </div>
+            <% } %>
               <ul class="list-unstyled">
-                  <% plNews.comments.forEach(function(comment){ %>
+                <% plNews.comments.forEach(function(comment){ %>
                   <li class="media">
                     <img class="mr-3" id="avatar" src="http://www.dcsportsfan.com/siteresources/images/defaultavatar.jpg" alt="Generic placeholder image">
                     <div class="media-body">
-                      <h5 class="mt-0 mb-1" id="commentUsername"><%= comment.author.username %></h5>
+                      <h5 class="mt-0 mb-1" id="commentUsername">
+                        <%= comment.author.username %>
+                      </h5>
                       <%= comment.text %>
-                      <p class="text-secondary" id="commentCreated">📅 <%= comment.created.toDateString() %></p>
+                        <p class="text-secondary" id="commentCreated">📅
+                          <%= moment(comment.created).fromNow() %>
+                        </p>
                     </div>
                   </li>
                   <% if (currentUser && comment.author.id.equals(currentUser._id) || currentUser && currentUser.isSuperAdmin) { %>
                     <div class="btn-group" role="group" id="buttonCommentAct">
-                        <form action="/premire-league/news/<%= plNews._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">  
-                      <button type="submit" id="actionComment" class="btn btn-danger">Delete</button>
-                          </form>
-                          <form action="/premire-league/news/<%=plNews._id%>/comments/<%= comment._id %>/edit">
+                      <form action="/premire-league/news/<%= plNews._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
+                        <button type="submit" id="actionComment" class="btn btn-danger">Delete</button>
+                      </form>
+                      <form action="/premire-league/news/<%=plNews._id%>/comments/<%= comment._id %>/edit">
                         <button type="submit" id="actionComment" class="btn btn-danger">Edit</button>
                       </form>
-                      </div>
+                    </div>
                     <% } %>
-                  <% }) %>
+                      <% }) %>
               </ul>
-            </div>
-          </div>
+      </div>
     </div>
-      
+  </div>
 
 
 
 
 
 
-        <% include ./partials/footer %>
+
+  <% include ./partials/footer %>

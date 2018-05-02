@@ -1,88 +1,101 @@
 <html>
 
 <head>
-    <title>
-        Premire League News
-    </title>
-    <!-- bootstrap 4 -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <!-- Google FONTS -->
-    <link href="https://fonts.googleapis.com/css?family=Arimo" rel="stylesheet">
+  <title>
+    <% if(typeof title !== 'undefined') { %>
+      <%= title %>
+        <% } else { %>
+          Premire League News
+          <% } %>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <link rel="stylesheet" href="/stylesheets/main.css">
+  </title>
+  <!-- bootstrap 4 -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+    crossorigin="anonymous">
+  <!-- Google FONTS -->
+  <link href="https://fonts.googleapis.com/css?family=Arimo" rel="stylesheet">
+  <!-- Match Heigh.js -->
 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/stylesheets/main.css">
 </head>
 
 
 <body>
-
-    <!-- navbar -->
-    <nav id="navbarTop" class="navbar navbar-expand-sm fixed-top navbar-dark bg-dark">
-      <a class="navbar-brand" href="#">Premire League News</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item-active">
-            <a class="nav-link" href="/premire-league/news">News Feed</a>
-          </li>
-          <% if(!currentUser){ %>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Login/Sign Up
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item" href="/login">Login</a>
-                <a class="dropdown-item" href="/register">Sign Up</a>
-              </div>
-          <% } else { %>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Singed In As: <%= currentUser.username %>
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+  <!-- navbar -->
+  <nav id="navbarTop" class="navbar navbar-expand-sm fixed-top navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Premire League News</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+      aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item-active">
+          <a class="nav-link" href="/premire-league/news">News Feed</a>
+        </li>
+        <% if(!currentUser){ %>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Login/Sign Up
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <a class="dropdown-item" href="/login">Login</a>
+              <a class="dropdown-item" href="/register">Sign Up</a>
+            </div>
+            <% } else { %>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Singed In As:
+                  <%= currentUser.username %>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                   <% if(currentUser && currentUser.isSuperAdmin) {%>
-                <a class="dropdown-item" href="/premire-league/news/new">Create New News</a>
+                    <a class="dropdown-item" href="/premire-league/news/new">Create New News</a>
+                    <% } %>
+                      <a class="dropdown-item" href="/logout">Logout</a>
+                </div>
                 <% } %>
-                <a class="dropdown-item" href="/logout">Logout</a>
-              </div>
-          <% } %>
 
-          </li>
-            <form class="form-inline my-2 my-lg-0" method="GET" action="/premire-league/news">
-            <input class="form-control mr-sm-2" name="Search" placeholder="Search News" aria-label="Search" required>
-            <button class="btn btn-outline-success my-2 my-sm-0" value="Search" type="submit">Search</button>
-            </form>
-        </ul>
-      </div>
-    </nav>
-    <div class="container">
-
-        <% if(error && error.length > 0){ %>
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-               <strong><%= error %></strong>
-               <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-        <% } %>
-        <% if(success && success.length > 0){ %>
-            <div class="alert alert-success" role="alert">
-                <strong><%= success %></strong>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        <% } %>
+              </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0" method="GET" action="/premire-league/news">
+        <input class="form-control mr-sm-2" name="Search" placeholder="Search News" aria-label="Search" required>
+        <button class="btn btn-outline-success my-2 my-sm-0" value="Search" type="submit">Search</button>
+      </form>
     </div>
+  </nav>
+  <div class="container">
+
+    <% if(error && error.length > 0){ %>
+      <div class="alert alert-danger alert-dismissible fade show" id="flash-message" role="alert">
+        <strong>
+          <%= error %>
+        </strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <% } %>
+        <% if(success && success.length > 0){ %>
+          <div class="alert alert-success" id="flash-message" role="alert">
+            <strong>
+              <%= success %>
+            </strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <% } %>
+  </div>
 
 
-    <!-- bootstrap js -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <!-- bootstrap js -->
-    <script src="//cdn.quilljs.com/1.3.5/quill.js"></script>
+  <!-- bootstrap js -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <!-- bootstrap js -->
+  <script src="//cdn.quilljs.com/1.3.5/quill.js"></script>
